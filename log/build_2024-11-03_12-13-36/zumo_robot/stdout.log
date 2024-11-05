@@ -1,0 +1,36 @@
+running egg_info
+creating ../../build/zumo_robot/zumo_robot.egg-info
+writing ../../build/zumo_robot/zumo_robot.egg-info/PKG-INFO
+writing dependency_links to ../../build/zumo_robot/zumo_robot.egg-info/dependency_links.txt
+writing entry points to ../../build/zumo_robot/zumo_robot.egg-info/entry_points.txt
+writing requirements to ../../build/zumo_robot/zumo_robot.egg-info/requires.txt
+writing top-level names to ../../build/zumo_robot/zumo_robot.egg-info/top_level.txt
+writing manifest file '../../build/zumo_robot/zumo_robot.egg-info/SOURCES.txt'
+reading manifest file '../../build/zumo_robot/zumo_robot.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file '../../build/zumo_robot/zumo_robot.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/ubuntu/ros2_ws/build/zumo_robot/build
+creating /home/ubuntu/ros2_ws/build/zumo_robot/build/lib
+creating /home/ubuntu/ros2_ws/build/zumo_robot/build/lib/zumo_robot
+copying zumo_robot/__init__.py -> /home/ubuntu/ros2_ws/build/zumo_robot/build/lib/zumo_robot
+copying zumo_robot/Test_LED.py -> /home/ubuntu/ros2_ws/build/zumo_robot/build/lib/zumo_robot
+running install
+running install_lib
+creating /home/ubuntu/ros2_ws/install/zumo_robot/lib/python3.10/site-packages/zumo_robot
+copying /home/ubuntu/ros2_ws/build/zumo_robot/build/lib/zumo_robot/__init__.py -> /home/ubuntu/ros2_ws/install/zumo_robot/lib/python3.10/site-packages/zumo_robot
+copying /home/ubuntu/ros2_ws/build/zumo_robot/build/lib/zumo_robot/Test_LED.py -> /home/ubuntu/ros2_ws/install/zumo_robot/lib/python3.10/site-packages/zumo_robot
+byte-compiling /home/ubuntu/ros2_ws/install/zumo_robot/lib/python3.10/site-packages/zumo_robot/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/ubuntu/ros2_ws/install/zumo_robot/lib/python3.10/site-packages/zumo_robot/Test_LED.py to Test_LED.cpython-310.pyc
+running install_data
+creating /home/ubuntu/ros2_ws/install/zumo_robot/share/ament_index
+creating /home/ubuntu/ros2_ws/install/zumo_robot/share/ament_index/resource_index
+creating /home/ubuntu/ros2_ws/install/zumo_robot/share/ament_index/resource_index/packages
+copying resource/zumo_robot -> /home/ubuntu/ros2_ws/install/zumo_robot/share/ament_index/resource_index/packages
+copying package.xml -> /home/ubuntu/ros2_ws/install/zumo_robot/share/zumo_robot
+running install_egg_info
+Copying ../../build/zumo_robot/zumo_robot.egg-info to /home/ubuntu/ros2_ws/install/zumo_robot/lib/python3.10/site-packages/zumo_robot-0.0.0-py3.10.egg-info
+running install_scripts
+Installing talker script to /home/ubuntu/ros2_ws/install/zumo_robot/lib/zumo_robot
+writing list of installed files to '/home/ubuntu/ros2_ws/build/zumo_robot/install.log'

@@ -1,0 +1,38 @@
+[0.818s] Invoking command in '/home/ubuntu/ros2_ws/src/zumo_robot': PYTHONPATH=/home/ubuntu/ros2_ws/build/zumo_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/ros2_ws/install/zumo_robot/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/zumo_robot build --build-base /home/ubuntu/ros2_ws/build/zumo_robot/build install --record /home/ubuntu/ros2_ws/build/zumo_robot/install.log --single-version-externally-managed install_data
+[1.069s] running egg_info
+[1.069s] creating ../../build/zumo_robot/zumo_robot.egg-info
+[1.070s] writing ../../build/zumo_robot/zumo_robot.egg-info/PKG-INFO
+[1.070s] writing dependency_links to ../../build/zumo_robot/zumo_robot.egg-info/dependency_links.txt
+[1.070s] writing entry points to ../../build/zumo_robot/zumo_robot.egg-info/entry_points.txt
+[1.070s] writing requirements to ../../build/zumo_robot/zumo_robot.egg-info/requires.txt
+[1.070s] writing top-level names to ../../build/zumo_robot/zumo_robot.egg-info/top_level.txt
+[1.070s] writing manifest file '../../build/zumo_robot/zumo_robot.egg-info/SOURCES.txt'
+[1.072s] reading manifest file '../../build/zumo_robot/zumo_robot.egg-info/SOURCES.txt'
+[1.072s] adding license file 'LICENSE'
+[1.072s] writing manifest file '../../build/zumo_robot/zumo_robot.egg-info/SOURCES.txt'
+[1.073s] running build
+[1.073s] running build_py
+[1.073s] creating /home/ubuntu/ros2_ws/build/zumo_robot/build
+[1.073s] creating /home/ubuntu/ros2_ws/build/zumo_robot/build/lib
+[1.073s] creating /home/ubuntu/ros2_ws/build/zumo_robot/build/lib/zumo_robot
+[1.073s] copying zumo_robot/__init__.py -> /home/ubuntu/ros2_ws/build/zumo_robot/build/lib/zumo_robot
+[1.073s] copying zumo_robot/Test_LED.py -> /home/ubuntu/ros2_ws/build/zumo_robot/build/lib/zumo_robot
+[1.073s] running install
+[1.074s] running install_lib
+[1.074s] creating /home/ubuntu/ros2_ws/install/zumo_robot/lib/python3.10/site-packages/zumo_robot
+[1.075s] copying /home/ubuntu/ros2_ws/build/zumo_robot/build/lib/zumo_robot/__init__.py -> /home/ubuntu/ros2_ws/install/zumo_robot/lib/python3.10/site-packages/zumo_robot
+[1.075s] copying /home/ubuntu/ros2_ws/build/zumo_robot/build/lib/zumo_robot/Test_LED.py -> /home/ubuntu/ros2_ws/install/zumo_robot/lib/python3.10/site-packages/zumo_robot
+[1.075s] byte-compiling /home/ubuntu/ros2_ws/install/zumo_robot/lib/python3.10/site-packages/zumo_robot/__init__.py to __init__.cpython-310.pyc
+[1.075s] byte-compiling /home/ubuntu/ros2_ws/install/zumo_robot/lib/python3.10/site-packages/zumo_robot/Test_LED.py to Test_LED.cpython-310.pyc
+[1.076s] running install_data
+[1.076s] creating /home/ubuntu/ros2_ws/install/zumo_robot/share/ament_index
+[1.076s] creating /home/ubuntu/ros2_ws/install/zumo_robot/share/ament_index/resource_index
+[1.076s] creating /home/ubuntu/ros2_ws/install/zumo_robot/share/ament_index/resource_index/packages
+[1.076s] copying resource/zumo_robot -> /home/ubuntu/ros2_ws/install/zumo_robot/share/ament_index/resource_index/packages
+[1.076s] copying package.xml -> /home/ubuntu/ros2_ws/install/zumo_robot/share/zumo_robot
+[1.076s] running install_egg_info
+[1.078s] Copying ../../build/zumo_robot/zumo_robot.egg-info to /home/ubuntu/ros2_ws/install/zumo_robot/lib/python3.10/site-packages/zumo_robot-0.0.0-py3.10.egg-info
+[1.079s] running install_scripts
+[1.103s] Installing talker script to /home/ubuntu/ros2_ws/install/zumo_robot/lib/zumo_robot
+[1.103s] writing list of installed files to '/home/ubuntu/ros2_ws/build/zumo_robot/install.log'
+[1.129s] Invoked command in '/home/ubuntu/ros2_ws/src/zumo_robot' returned '0': PYTHONPATH=/home/ubuntu/ros2_ws/build/zumo_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/ros2_ws/install/zumo_robot/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/zumo_robot build --build-base /home/ubuntu/ros2_ws/build/zumo_robot/build install --record /home/ubuntu/ros2_ws/build/zumo_robot/install.log --single-version-externally-managed install_data

@@ -1,0 +1,32 @@
+running egg_info
+creating ../../build/Zumo_Robot/Zumo_Robot.egg-info
+writing ../../build/Zumo_Robot/Zumo_Robot.egg-info/PKG-INFO
+writing dependency_links to ../../build/Zumo_Robot/Zumo_Robot.egg-info/dependency_links.txt
+writing entry points to ../../build/Zumo_Robot/Zumo_Robot.egg-info/entry_points.txt
+writing requirements to ../../build/Zumo_Robot/Zumo_Robot.egg-info/requires.txt
+writing top-level names to ../../build/Zumo_Robot/Zumo_Robot.egg-info/top_level.txt
+writing manifest file '../../build/Zumo_Robot/Zumo_Robot.egg-info/SOURCES.txt'
+reading manifest file '../../build/Zumo_Robot/Zumo_Robot.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file '../../build/Zumo_Robot/Zumo_Robot.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/ubuntu/ros2_ws/build/Zumo_Robot/build
+creating /home/ubuntu/ros2_ws/build/Zumo_Robot/build/lib
+creating /home/ubuntu/ros2_ws/build/Zumo_Robot/build/lib/Zumo_Robot
+copying Zumo_Robot/__init__.py -> /home/ubuntu/ros2_ws/build/Zumo_Robot/build/lib/Zumo_Robot
+running install
+running install_lib
+creating /home/ubuntu/ros2_ws/install/Zumo_Robot/lib/python3.10/site-packages/Zumo_Robot
+copying /home/ubuntu/ros2_ws/build/Zumo_Robot/build/lib/Zumo_Robot/__init__.py -> /home/ubuntu/ros2_ws/install/Zumo_Robot/lib/python3.10/site-packages/Zumo_Robot
+byte-compiling /home/ubuntu/ros2_ws/install/Zumo_Robot/lib/python3.10/site-packages/Zumo_Robot/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /home/ubuntu/ros2_ws/install/Zumo_Robot/share/ament_index
+creating /home/ubuntu/ros2_ws/install/Zumo_Robot/share/ament_index/resource_index
+creating /home/ubuntu/ros2_ws/install/Zumo_Robot/share/ament_index/resource_index/packages
+copying resource/Zumo_Robot -> /home/ubuntu/ros2_ws/install/Zumo_Robot/share/ament_index/resource_index/packages
+copying package.xml -> /home/ubuntu/ros2_ws/install/Zumo_Robot/share/Zumo_Robot
+running install_egg_info
+Copying ../../build/Zumo_Robot/Zumo_Robot.egg-info to /home/ubuntu/ros2_ws/install/Zumo_Robot/lib/python3.10/site-packages/Zumo_Robot-0.0.0-py3.10.egg-info
+running install_scripts
+writing list of installed files to '/home/ubuntu/ros2_ws/build/Zumo_Robot/install.log'
