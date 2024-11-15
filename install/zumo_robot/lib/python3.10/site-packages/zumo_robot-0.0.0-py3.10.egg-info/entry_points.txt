@@ -1,3 +1,0 @@
-[console_scripts]
-talker = zumo_robot.Test_LED:main
-
