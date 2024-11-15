@@ -20,7 +20,10 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-        	'talker = zumo_robot.Test_LED:main',
+        	'talker = test.test_LED:main',
+            'pid_controller_node = zumo_robot.pid_controller_node:main'
+            'camera_node = zumo_robot.camera_node:main'
+            'arduino_node = zumo_robot.arduino_node:main'
         ],
     },
 )
