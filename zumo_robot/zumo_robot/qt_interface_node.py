@@ -37,7 +37,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         
         # Lade die UI-Datei
-        ui_path = os.path.join(os.path.dirname(__file__), os.getcwd() + '/src/zumo_robot/Qt/zumorobot.ui')
+        ui_path = os.path.join(os.path.dirname(__file__), os.getcwd() + '/src/ZumoRobot/zumo_robot/Qt/zumorobot.ui')
         uic.loadUi(ui_path, self)
         
         # Initialisiere den ROS2-Node
