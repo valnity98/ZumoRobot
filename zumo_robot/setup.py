@@ -11,7 +11,15 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools'],
+        install_requires=[
+        'setuptools', 
+        'serial', 
+        'opencv-python', 
+        'rclpy', 
+        'std_msgs',
+        'cv_bridge',
+        'PyQt5',
+    ],  # Abhängigkeiten hier einfügen
     zip_safe=True,
     maintainer='ubuntu',
     maintainer_email='ubuntu@todo.todo',
@@ -20,10 +28,11 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-        	'talker = test.test_LED:main',
-            'pid_controller_node = zumo_robot.pid_controller_node:main'
-            'camera_node = zumo_robot.camera_node:main'
-            'arduino_node = zumo_robot.arduino_node:main'
+        	'talker = zumo_robot.test_led:main',
+            'camera_node = zumo_robot.camera_node:main',
+            'pid_controller_node = zumo_robot.pid_controller_node:main',
+            'arduino_node = zumo_robot.arduino_node:main',
+            'qt_ros_interface = zumo_robot.qt_interface_node:main',
         ],
     },
 )

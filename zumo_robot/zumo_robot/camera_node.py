@@ -2,6 +2,8 @@ import rclpy  # ROS 2 Python-Client-Bibliothek
 from rclpy.node import Node  # Basisklasse für ROS 2 Nodes
 from std_msgs.msg import Float32MultiArray  # Nachrichtentyp für das Publizieren von Arrays
 import cv2  # OpenCV-Bibliothek für Bildverarbeitung
+from sensor_msgs.msg import Image  # Nachrichtentyp für Bilder
+from cv_bridge import CvBridge  # Brücke zwischen OpenCV und ROS
 
 class CameraNode(Node):
     def __init__(self):
@@ -9,24 +11,43 @@ class CameraNode(Node):
         super().__init__('camera_node')
 
         # Erstellen eines Publishers, der Float32MultiArray-Nachrichten auf dem Topic 'line_coordinates' veröffentlicht
-        self.publisher_ = self.create_publisher(Float32MultiArray, 'line_coordinates', 10)
+        self.publisher_coordinates = self.create_publisher(Float32MultiArray, 'line_coordinates', 10)
+        self.publisher_image = self.create_publisher(Image, 'camera_topic', 10)
+
+        self.bridge = CvBridge()  # Initialisieren der CvBridge für den Bildtransfer
 
         # Öffnen der Webcam mit OpenCV (only LiNUX)
         self.cap = cv2.VideoCapture(2)
+
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
         # Überprüfen, ob die Kamera geöffnet werden konnte
         if not self.cap.isOpened():
             self.get_logger().error("Kamera konnte nicht geöffnet werden.")
             return
         
-        # Timer, der die Funktion 'publish_coordinates' alle 0.1 Sekunden aufruft (10 Hz)
+        # Timer, der die Funktion 'publish_coordinates and publish_frame' alle 0.1 Sekunden aufruft (10 Hz)
         self.timer = self.create_timer(0.1, self.publish_coordinates)
+        self.timer = self.create_timer(0.1, self.publish_frame)  
 
-    def publish_coordinates(self):
+    def publish_frame(self):
         # Frame von der Webcam lesen
         ret, frame = self.cap.read()
         if not ret:
             self.get_logger().error("Fehler beim Lesen des Frames.")
+            return
+
+        # OpenCV-Bild in ROS-Image-Nachricht konvertieren
+        ros_image = self.bridge.cv2_to_imgmsg(frame, encoding="bgr8")
+        self.publisher_image.publish(ros_image)
+
+
+    def publish_coordinates(self):
+        # coordinates von der Webcam lesen
+        ret, frame = self.cap.read()
+        if not ret:
+            self.get_logger().error("Fehler beim Lesen des coordinates.")
             return
     
         # Bestimmen der Höhe und Breite des Frames
@@ -57,9 +78,10 @@ class CameraNode(Node):
                 cY = int(M["m01"] / M["m00"]) + y_start  # Korrigierter Y-Wert, um im Kontext des Originalbilds zu sein
 
                 # Erstellen und Publizieren der Nachricht mit den Koordinaten
+                # Daten werden von Datatype float definiert
                 msg = Float32MultiArray()
                 msg.data = [float(cX), float(cY)]
-                self.publisher_.publish(msg)
+                self.publisher_coordinates.publish(msg)
     
                 # Ausgabe der Koordinaten zur Überprüfung im Log
                 self.get_logger().info(f"cX: {cX}, cY: {cY}")
@@ -73,7 +95,7 @@ class CameraNode(Node):
         # Setze den bearbeiteten Streifen wieder in das Originalbild ein
         frame[y_start:y_end, :] = strip
 
-              # Anzeigen des Streifens und des Originalbildes in separaten Fenstern (optional für Debugging)
+        # Anzeigen des Streifens und des Originalbildes in separaten Fenstern (optional für Debugging)
         cv2.imshow("Erkennung", strip)
         cv2.imshow("Threshold", thresholded)
         cv2.imshow("Original", frame)

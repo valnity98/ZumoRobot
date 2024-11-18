@@ -1,5 +1,7 @@
+#include Dateien
 import time
 
+#Class "Zumo329PPID" für Steuerung der Motoren der Roboter
 class Zumo328PPID:
     def __init__(self, max_speed=200.0):
         self.max_speed = max_speed
@@ -39,4 +41,5 @@ class Zumo328PPID:
         return self.left_speed
     
     def get_right_speed(self):
+
         return self.right_speed 
