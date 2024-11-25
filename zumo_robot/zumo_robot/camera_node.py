@@ -54,8 +54,8 @@ class CameraNode(Node):
         height, width = frame.shape[:2]
 
         # Definieren eines 100 Pixel hohen horizontalen Streifens in der Mitte des Bildes
-        y_start = height // 2 - 50
-        y_end = height // 2 + 50
+        y_start = 400
+        y_end = 450
         strip = frame[y_start:y_end, :]  # Extrahieren des Streifens
 
         # Umwandeln des Streifens in ein Graustufenbild
