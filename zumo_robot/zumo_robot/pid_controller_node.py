@@ -1,111 +1,128 @@
-# Importiere die notwendigen Module und Bibliotheken
+#!/usr/bin/env python3
+"""
+PID Controller Node for ROS 2
+Author: Mutasem Bader, Felix Biermann
+Description:
+    - Receives line coordinates from 'line_coordinates' topic.
+    - Controls motors using PID logic and sends speed commands to Arduino.
+    - Activates or deactivates the PID controller based on 'robot_command' topic.
+
+Requirements:
+    - ROS 2 installation
+    - numpy, serial, Zumo_Library for PIDController
+"""
+
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float32MultiArray, Bool, Int16MultiArray
 import serial
-from Zumo_Library.PIDController import Zumo328PPID  # Import der PID-Controller-Logik
+from Zumo_Library.PIDController import Zumo328PPID
 import struct
 import numpy as np
 
+
 class PIDControllerNode(Node):
+    """ROS 2 Node for controlling a robot's motors using a PID controller."""
+
     def __init__(self):
         super().__init__('pid_controller_node')
-        
-        # Erstelle ROS2-Abonnements
+
+        # Subscriptions
         self.create_subscription(Float32MultiArray, 'line_coordinates', self.line_coordinates_callback, 10)
         self.create_subscription(Bool, 'robot_command', self.command_callback, 10)
 
-        # Statusindikator für Aktivierung des Controllers
-        self.is_active = False
-        self.serial_port = None
-        
+        # Controller activation state (use the application and then change hier to False)
+        self.is_active = True
 
-        # Serielle Verbindung zum Arduino
-        try:
-            self.serial_port = serial.Serial('/dev/ttyACM0', 115200, timeout=1)  # Passen Sie den seriellen Port an
-        except serial.SerialException as e:
-            self.serial_port = None
-            self.get_logger().error(f"Failed to open serial port: {str(e)}")
+        # Serial connection setup
+        self.serial_port = self.setup_serial_connection('/dev/ttyACM0', 115200)
 
-        # Initialisiere den PID-Controller
+        # PID Controller initialization
         self.pid_controller = Zumo328PPID(max_speed=150.0)
 
-        # Publisher für Motorsteuerbefehle
-        self.publisher_Motoren = self.create_publisher(Int16MultiArray, 'motor_speeds', 10)
+        # Publisher for motor speed commands
+        self.publisher_motor_speeds = self.create_publisher(Int16MultiArray, 'motor_speeds', 10)
 
-    # Callback-Funktion, um die Koordinaten der Linie zu empfangen und die PID-Steuerung zu berechnen.
+    def setup_serial_connection(self, port, baudrate):
+        """Initializes the serial connection to the Arduino."""
+
+        try:
+            serial_port = serial.Serial(port, baudrate, timeout=1)
+            self.get_logger().info(f"Serial port {port} opened successfully.")
+            return serial_port
+        except serial.SerialException as e:
+            self.get_logger().error(f"Failed to open serial port: {str(e)}")
+            return None
+
     def line_coordinates_callback(self, msg):
+        """Callback to handle line coordinates and calculate motor speeds."""
+        if not self.is_active:
+            self.get_logger().info("PID Controller is inactive. Ignoring line coordinates.")
+            return
 
-        #if not self.is_active:
-        #   self.get_logger().info("PID Controller is inactive. Ignoring line coordinates.")
-        #   return
+        try:
+            cX, cY = msg.data  # Extract coordinates
+            self.get_logger().info(f"Received line coordinates: cX={cX}, cY={cY}")
 
-        #self.get_logger().info(f"Received line coordinates: {msg.data}")
-        cX, cY = msg.data  # Extrahiere die Koordinaten
+            # PID control calculation
+            self.pid_controller.control_speed(cX, target_position=334, kp=0.6, kd=0.3, aktiv=False)
 
+            # Get calculated motor speeds
+            left_speed = np.int16(self.pid_controller.get_left_speed())
+            right_speed = np.int16(self.pid_controller.get_right_speed())
 
-        # control_speed(self, measured_position, target_position, kp, kd, aktiv=False):
-        self.pid_controller.control_speed(cX,334, 0.6, 0.3 ,False)  # PID-Berechnung
-        
-        # Hole die berechneten Motorsteuerungen
-        left_speed = np.int16(self.pid_controller.get_left_speed())
-        right_speed = np.int16(self.pid_controller.get_right_speed())
+            # Publish motor speeds
+            motor_msg = Int16MultiArray()
+            motor_msg.data = [int(left_speed), int(right_speed)]
+            self.publisher_motor_speeds.publish(motor_msg)
 
-        # Veröffentliche Motorsteuerbefehle, abhängig von der Controller-Aktivität
-        motor_msg = Int16MultiArray()
-        #motor_msg.data = [left_speed, right_speed] if self.is_active else [0, 0] 
-        motor_msg.data = [int(left_speed), int(right_speed)]  
-        self.publisher_Motoren.publish(motor_msg)
+            # Send commands to Arduino
+            self.send_to_arduino(left_speed, right_speed)
+        except ValueError as e:
+            self.get_logger().error(f"Invalid line coordinates received: {e}")
+        except Exception as e:
+            self.get_logger().error(f"Unexpected error in line_coordinates_callback: {str(e)}")
 
-        # Sende Steuerbefehle an Arduino
-        self.send_to_arduino(left_speed, right_speed)
-
-
-
-
-    # Sendet die Motorsteuerbefehle über die serielle Verbindung an den Arduino.
-    def send_to_arduino(self, left_speed, right_speed): 
-
-        if self.serial_port is None or not self.serial_port.is_open:
+    def send_to_arduino(self, left_speed, right_speed):
+        """Sends motor speed commands to the Arduino over the serial port."""
+        if not self.serial_port or not self.serial_port.is_open:
             self.get_logger().error("Serial port is not available. Skipping send.")
             return
 
         try:
-            # Verpacke die Geschwindigkeitswerte als zwei 16-Bit-Werte
+            # Pack speeds as two 16-bit integers
             data_to_send = struct.pack('<hh', left_speed, right_speed)
-        
-            # Füge Start- und End-Bytes hinzu
-            start_byte = b'\x02'  # Start-Byte (STX)
-            end_byte = b'\x03'    # End-Byte (ETX)
-            # Kombiniere die Daten mit Start- und End-Bytes
+            start_byte = b'\x02'  # Start byte
+            end_byte = b'\x03'  # End byte
             full_data = start_byte + data_to_send + end_byte
-    
-            # Sende die Daten über die serielle Verbindung
-            self.serial_port.write(full_data)
 
+            # Send the data
+            self.serial_port.write(full_data)
             self.get_logger().info(f"Sent to Arduino: Left={left_speed}, Right={right_speed}")
         except serial.SerialException as e:
             self.get_logger().error(f"Failed to send data: {str(e)}")
         except Exception as e:
             self.get_logger().error(f"Unexpected error in send_to_arduino: {str(e)}")
 
-       
+    def command_callback(self, msg: Bool):
+        """Activates or deactivates the PID controller based on the command message."""
+        self.is_active = msg.data
+        state = "active" if self.is_active else "inactive"
+        self.get_logger().info(f"PID Controller is now {state}.")
 
-    # Schließe die serielle Verbindung beim Beenden des Nodes
+        if not self.is_active:
+            # Stop motors when deactivated
+            self.send_to_arduino(0, 0)
+
     def close(self):
+        """Closes the serial connection when the node shuts down."""
         if self.serial_port and self.serial_port.is_open:
             self.serial_port.close()
             self.get_logger().info("Closed serial port.")
 
-    # Aktiviert oder deaktiviert den PID-Controller basierend auf eingehenden Befehlen.
-    def command_callback(self, msg: Bool):
-        self.is_active = msg.data
-        if not self.is_active:
-            # Motoren auf Null setzen, wenn der PID-Controller deaktiviert ist
-            self.send_to_arduino(0, 0)
-
 
 def main(args=None):
+    """Main function to initialize and spin the ROS 2 node."""
     rclpy.init(args=args)
     node = PIDControllerNode()
 
@@ -120,3 +137,5 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+
+

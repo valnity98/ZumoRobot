@@ -1,97 +1,137 @@
-##################################################
-#
-# Topic: Qt Application to read data from encoder, motoren and video streaming
-# Author: Mutasem Bader
-# Relaese: Date: 17.11.2024
-# Change: xxxxxx
-#
-##################################################
+#!/usr/bin/env python3
+'''
+Qt App Node for ROS 2
+Author: Mutasem Bader, Felix Biermann
+Description:
+    - This Qt application communicates with a robot using ROS 2.
+    - The app allows sending start/stop commands to control the robot and displays the camera feed from the robot.
+    - The ROS 2 node handles video stream reception, robot control, and communication via serial.
+    - OpenCV and cv_bridge are used to display the video feed in the GUI.
+    - ROS2 communication runs in a separate thread to avoid blocking the GUI event loop.
+Requirements:
+    - ROS 2 installation
+    - serial libraries (`pyserial`)
+    - OpenCV (`cv2`)
+    - PyQt5
+    - cv_bridge (for ROS2 <-> OpenCV image conversion)
+'''
 
+import sys  # System functions such as command line arguments
+import os  # Operating system functions like path management
+import rclpy  # ROS2 Python client library
+from rclpy.node import Node  # For creating a ROS2 node
+from std_msgs.msg import Bool  # ROS2 Bool message
+from sensor_msgs.msg import Image  # ROS2 Image message for camera data
+from cv_bridge import CvBridge  # ROS2 image message to OpenCV conversion
+import cv2  # OpenCV library for image processing
+from PyQt5.QtWidgets import QApplication, QMainWindow  # GUI components
+from PyQt5.QtGui import QImage, QPixmap  # Image display classes
+from PyQt5 import uic, QtCore  # UI file loader and QtCore for threading
 
-# Importiere notwendige Bibliotheken und Module für ROS2, OpenCV und die Qt-Oberfläche
-import sys  # Systemfunktionen wie Kommandozeilenargumente
-import os  # Betriebssystemfunktionen wie Pfadverwaltung
-import rclpy  # ROS2 Python-Client-Bibliothek
-from rclpy.node import Node  # Zum Erstellen eines ROS2-Knotens
-from std_msgs.msg import Bool  # ROS2 Bool-Nachricht
-from sensor_msgs.msg import Image  # ROS2 Image-Nachricht für Kamera-Daten
-from cv_bridge import CvBridge  # Konvertierung zwischen ROS2-Bildnachrichten und OpenCV-Bildern
-import cv2  # OpenCV-Bibliothek für Bildverarbeitung
-from PyQt5.QtWidgets import QApplication, QMainWindow  # GUI-Komponenten
-from PyQt5.QtGui import QImage, QPixmap  # Bildanzeige-Klassen
-from PyQt5 import uic, QtCore  # UI-Dateien laden und QtCore für Threading
-
-# Thread-Klasse zum Ausführen des ROS2-Knotens im Hintergrund, um die GUI nicht zu blockieren.
 class ROS2Thread(QtCore.QThread):
-    
+    """
+    ROS2 Thread class to run the ROS2 node in a background thread
+    to prevent blocking the GUI.
+    """
     def __init__(self, node):
         super().__init__()
         self.node = node
 
     def run(self):
-        rclpy.spin(self.node)  # Startet den ROS2-Node zur Verarbeitung von Nachrichten
+        """Starts the ROS2 node to process messages in the background."""
+        try:
+            rclpy.spin(self.node)
+        except rclpy.shutdown_shutdown_exception:
+            self.node.get_logger().info("ROS2 Node stopped successfully.")
+        except Exception as e:
+            self.node.get_logger().error(f"Unexpected error occurred in ROS2 thread: {e}")
 
-# Hauptklasse der Qt-Anwendung
 class MainWindow(QMainWindow):
+    """
+    Main class for the Qt application interface.
+    Handles communication with ROS2, robot control, and video display.
+    """
     def __init__(self):
         super(MainWindow, self).__init__()
-        
-        # Lade die UI-Datei
+
+        # Load the UI file
         ui_path = os.path.join(os.path.dirname(__file__), os.getcwd() + '/src/ZumoRobot/zumo_robot/Qt/zumorobot.ui')
         uic.loadUi(ui_path, self)
-        
-        # Initialisiere den ROS2-Node
+
+        # Initialize the ROS2 node
         rclpy.init()
         self.node = Node("qt_ros_interface")
         self.publisher = self.node.create_publisher(Bool, 'robot_command', 10)
         self.video_subscriber = self.node.create_subscription(Image, 'camera_topic', self.display_video, 10)
-        
-        self.bridge = CvBridge()  # Initialisiere CvBridge
 
-        # Verknüpfe GUI-Buttons mit Funktionen
+        self.bridge = CvBridge()  # Initialize CvBridge for converting ROS2 image messages to OpenCV images
+
+        # Connect GUI buttons to their corresponding functions
         self.Start_PushButton.clicked.connect(self.send_start_command)
         self.Stop_PushButton.clicked.connect(self.send_stop_command)
 
-        # Starte den ROS2-Thread
+        # Start the ROS2 communication in a background thread to prevent blocking the GUI
         self.ros_thread = ROS2Thread(self.node)
         self.ros_thread.start()
 
-    # Sendet den Start-Befehl an das Robotersystem.
     def send_start_command(self):
-        msg = Bool(data=True)
-        self.publisher.publish(msg)
+        """Sends the start command to the robot system."""
+        self._send_robot_command(True)
         self.Status_LineEdit.setText("Robot started")
-        
-    # Sendet den Stop-Befehl an das Robotersystem.
+
     def send_stop_command(self):
-        msg = Bool(data=False)
-        self.publisher.publish(msg)
+        """Sends the stop command to the robot system."""
+        self._send_robot_command(False)
         self.Status_LineEdit.setText("Robot stopped")
 
-    # Zeigt das Video von der Kamera in der GUI an.
+    def _send_robot_command(self, command: bool):
+        """Helper function to send commands (start/stop) to the robot via ROS2."""
+        try:
+            msg = Bool(data=command)
+            self.publisher.publish(msg)
+            self.get_logger().info(f"Sent {'start' if command else 'stop'} command to the robot.")
+        except rclpy.exceptions.RCLException as e:
+            self.get_logger().error(f"Failed to send robot command due to ROS2 exception: {e}")
+        except Exception as e:
+            self.get_logger().error(f"Unexpected error in sending robot command: {e}")
+
     def display_video(self, msg):
-  
-        frame = self.bridge.imgmsg_to_cv2(msg, "bgr8")
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        
-        height, width, channel = frame.shape
-        bytes_per_line = 3 * width
-        q_img = QImage(frame.data, width, height, bytes_per_line, QImage.Format_RGB888)
-        self.Video_Label.setPixmap(QPixmap.fromImage(q_img))
-        
-    # Räumt Ressourcen auf, wenn das Fenster geschlossen wird.
+        """Handles video stream data from the robot and updates the GUI display."""
+        try:
+            frame = self.bridge.imgmsg_to_cv2(msg, "bgr8")  # Convert the ROS image to OpenCV format
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # Convert to RGB format for displaying in the GUI
+
+            # Get image dimensions for creating QImage object
+            height, width, channel = frame.shape
+            bytes_per_line = 3 * width  # 3 bytes per pixel (RGB)
+            q_img = QImage(frame.data, width, height, bytes_per_line, QImage.Format_RGB888)
+
+            # Set the QImage as the image source in the GUI label
+            self.Video_Label.setPixmap(QPixmap.fromImage(q_img))
+        except cv_bridge.CvBridgeError as e:
+            self.get_logger().error(f"Error converting ROS image message to OpenCV: {e}")
+        except Exception as e:
+            self.get_logger().error(f"Unexpected error displaying video: {e}")
+
     def closeEvent(self, event):
-        self.node.destroy_node()
-        rclpy.shutdown()
-        event.accept()
+        """Handles cleanup and ROS2 node shutdown when the window is closed."""
+        try:
+            self.node.destroy_node()  # Ensure the node is destroyed properly
+            rclpy.shutdown()  # Shutdown ROS2 gracefully
+            event.accept()
+        except Exception as e:
+            self.get_logger().error(f"Error during shutdown: {e}")
+            event.accept()
 
-# Hauptfunktion zur Ausführung der Qt-Anwendung
 def main():
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec_())
+    """Main function to run the Qt application."""
+    try:
+        app = QApplication(sys.argv)
+        window = MainWindow()
+        window.show()
+        sys.exit(app.exec_())
+    except Exception as e:
+        print(f"Error running the application: {e}")
 
-# Einstiegspunkt des Skripts
 if __name__ == "__main__":
     main()
