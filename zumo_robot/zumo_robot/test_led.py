@@ -15,9 +15,9 @@ from rclpy.node import Node
 import serial
 from serial.serialutil import SerialException
 
-class Talker(Node):
+class test_led(Node):
     def __init__(self):
-        super().__init__('talker')
+        super().__init__('test_led')
 
         # Try to establish the serial connection
         self.serial_port = None
@@ -56,7 +56,7 @@ class Talker(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = Talker()
+    node = test_led()
 
     try:
         rclpy.spin(node)

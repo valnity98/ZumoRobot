@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 '''
 Qt App Node for ROS 2
-Author: Mutasem Bader, Felix Biermann
+Author: Mutasem Bader
 Description:
     - This Qt application communicates with a robot using ROS 2.
     - The app allows sending start/stop commands to control the robot and displays the camera feed from the robot.
@@ -22,7 +22,7 @@ import rclpy  # ROS2 Python client library
 from rclpy.node import Node  # For creating a ROS2 node
 from std_msgs.msg import Bool  # ROS2 Bool message
 from sensor_msgs.msg import Image  # ROS2 Image message for camera data
-from cv_bridge import CvBridge  # ROS2 image message to OpenCV conversion
+from cv_bridge import CvBridge ,CvBridgeError  # ROS2 image message to OpenCV conversion
 import cv2  # OpenCV library for image processing
 from PyQt5.QtWidgets import QApplication, QMainWindow  # GUI components
 from PyQt5.QtGui import QImage, QPixmap  # Image display classes
@@ -108,7 +108,7 @@ class MainWindow(QMainWindow):
 
             # Set the QImage as the image source in the GUI label
             self.Video_Label.setPixmap(QPixmap.fromImage(q_img))
-        except cv_bridge.CvBridgeError as e:
+        except CvBridgeError as e:
             self.get_logger().error(f"Error converting ROS image message to OpenCV: {e}")
         except Exception as e:
             self.get_logger().error(f"Unexpected error displaying video: {e}")

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 PID Controller Node for ROS 2
-Author: Mutasem Bader, Felix Biermann
+Author: Mutasem Bader
 Description:
     - Receives line coordinates from 'line_coordinates' topic.
     - Controls motors using PID logic and sends speed commands to Arduino.
@@ -31,7 +31,7 @@ class PIDControllerNode(Node):
         self.create_subscription(Float32MultiArray, 'line_coordinates', self.line_coordinates_callback, 10)
         self.create_subscription(Bool, 'robot_command', self.command_callback, 10)
 
-        # Controller activation state (use the application and then change hier to False)
+        # Controller activation state (use the Qt application and then change hier to False)
         self.is_active = True
 
         # Serial connection setup

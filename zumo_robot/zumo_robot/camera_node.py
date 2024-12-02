@@ -32,7 +32,7 @@ class CameraNode(Node):
         # CvBridge for OpenCV-ROS conversions
         self.bridge = CvBridge()
 
-        # Initialize camera
+        # Initialize camera (webcam for laptob by default ist 0 )
         self.cap = cv2.VideoCapture(2)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
@@ -43,7 +43,7 @@ class CameraNode(Node):
             rclpy.shutdown()
             return
 
-        # Timers for periodic publishing
+        # Timers for periodic publishing (10 hz)
         self.timer_coordinates = self.create_timer(0.1, self.publish_coordinates)
         self.timer_frame = self.create_timer(0.1, self.publish_frame)
 
@@ -69,6 +69,7 @@ class CameraNode(Node):
 
         # Bestimmen der Höhe und Breite des Frames
         # height, width = frame.shape[:2]
+        
         y_start, y_end = 400, 450
         strip = frame[y_start:y_end, :]
 

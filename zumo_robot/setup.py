@@ -19,6 +19,7 @@ setup(
         'std_msgs',
         'cv_bridge',
         'PyQt5',
+        'nav_msgs'
     ],  # Abhängigkeiten hier einfügen
     zip_safe=True,
     maintainer='ubuntu',
@@ -28,11 +29,12 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-        	'talker = zumo_robot.test_led:main',
+        	'test_led = zumo_robot.test_led:main',
             'camera_node = zumo_robot.camera_node:main',
             'pid_controller_node = zumo_robot.pid_controller_node:main',
             'arduino_node = zumo_robot.arduino_node:main',
             'qt_ros_interface = zumo_robot.qt_interface_node:main',
+            'path_mapping_node = zumo_robot.mapping_node:main',
         ],
     },
 )

@@ -21,9 +21,6 @@ from std_msgs.msg import Float32MultiArray
 from nav_msgs.msg import OccupancyGrid
 from geometry_msgs.msg import Pose
 
-
-
-
 class PathMappingNode(Node):
     def __init__(self):
         super().__init__('path_mapping_node')
