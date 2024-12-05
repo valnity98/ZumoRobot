@@ -12,7 +12,7 @@ This project aims to enhance the Zumo robot to operate based on camera-based ima
 
 ## Required Hardware
 
-- **Zumo Robot with Arduino Controller:** The base hardware, including motors and encoders.
+- **Zumo Robot with Arduino Controller:** The base hardware, including motors. This project uses the Zumo Shield for Arduino v1.2, which does not come pre-equipped with encoders. However, encoders have been mounted onto the Zumo for this project.
 - **External Camera:** A Linux-compatible webcam.
 - **Laptop with ROS2:** For robot control, image processing, and ROS2 node execution.
 - **Predefined Track:** A black line on a white background for line-following experiments.
