@@ -58,22 +58,24 @@ class Zumo328PPID:
                 deltaT = 1e-6  # Set to a small value if deltaT is too small to avoid division by zero
 
             self._prevT = currT  # Update the previous time
-
-            # Calculate the speed difference using the PID formula (P and D terms)
-            speed_difference = (kp * error) + (kd * ((error - self._last_error) / deltaT))
-            self._last_error = error  # Update the last error value
-
-            # Update the motor speeds based on the speed difference
-            self._left_speed = self.max_speed + speed_difference
-            self._right_speed = self.max_speed - speed_difference
-
-            # Limit the motor speeds to be within the range [0, max_speed]
-            self._left_speed = max(0, min(self._left_speed, self.max_speed))
-            self._right_speed = max(0, min(self._right_speed, self.max_speed))
         else:
+            deltaT = 1
+
+        # Calculate the speed difference using the PID formula (P and D terms)
+        speed_difference = (kp * error) + (kd * ((error - self._last_error) / deltaT))
+        self._last_error = error  # Update the last error value
+
+        # Update the motor speeds based on the speed difference
+        self._left_speed = self.max_speed + speed_difference
+        self._right_speed = self.max_speed - speed_difference
+
+        # Limit the motor speeds to be within the range [0, max_speed]
+        self._left_speed = max(0, min(self._left_speed, self.max_speed))
+        self._right_speed = max(0, min(self._right_speed, self.max_speed))
+        #else:
             # If not active, leave motor speeds as they are (or reset to 0)
-            self._left_speed = 0
-            self._right_speed = 0
+            # self._left_speed = 0
+            # self._right_speed = 0
 
     def get_left_speed(self):
         """Returns the current left motor speed."""

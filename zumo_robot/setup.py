@@ -10,6 +10,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + '/launch', ['launch/launch_zumo.py']),
     ],
         install_requires=[
         'setuptools', 
@@ -19,7 +20,8 @@ setup(
         'std_msgs',
         'cv_bridge',
         'PyQt5',
-        'nav_msgs'
+        'nav_msgs',
+        'tf2_ros'
     ],  # Abhängigkeiten hier einfügen
     zip_safe=True,
     maintainer='ubuntu',
@@ -35,6 +37,8 @@ setup(
             'arduino_node = zumo_robot.arduino_node:main',
             'qt_ros_interface = zumo_robot.qt_interface_node:main',
             'path_mapping_node = zumo_robot.mapping_node:main',
+            'tf2_transform_node = zumo_robot.Tf2_Node:main',
+            
         ],
     },
 )

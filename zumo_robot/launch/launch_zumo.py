@@ -23,4 +23,9 @@ def generate_launch_description():
             executable='path_mapping_node',
             name='mapping_node'
         ),
+        Node(
+            package='zumo_robot',
+            executable='tf2_transform_node',
+            name='Tf2_Node'
+        ),
     ])

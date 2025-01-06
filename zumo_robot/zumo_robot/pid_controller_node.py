@@ -62,7 +62,7 @@ class PIDControllerNode(Node):
 
         try:
             cX, cY = msg.data  # Extract coordinates
-            self.get_logger().info(f"Received line coordinates: cX={cX}, cY={cY}")
+            #self.get_logger().info(f"Received line coordinates: cX={cX}, cY={cY}")
 
             # PID control calculation
             self.pid_controller.control_speed(cX, target_position=334, kp=0.6, kd=0.3, aktiv=False)
