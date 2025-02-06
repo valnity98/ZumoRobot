@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+
+"""
+Transformation node for ROS 2
+Author: Mutasem Bader
+Description:
+    -Broadcast the transformation from 'base_link' to 'map' using tf2.
+Requirements:
+    - ROS 2 installation
+"""
+
+
 import rclpy
 from rclpy.node import Node
 import tf2_ros
@@ -5,7 +17,7 @@ from geometry_msgs.msg import TransformStamped, Pose
 
 class TransformPublisherNode(Node):
     def __init__(self):
-        super().__init__('transform_publisher_node')
+        super().__init__('tf2_node')
 
         # TF2 Transform Broadcaster
         self.tf_broadcaster = tf2_ros.TransformBroadcaster(self)

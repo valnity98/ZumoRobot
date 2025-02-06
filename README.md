@@ -37,6 +37,11 @@ pip install opencv-python
 pip install serial
 sudo apt remove brltty
 pip install pyserial
+pip install PyQt5 opencv-python-headless
+sudo apt install libxcb-xinerama0 libxcb-xinerama0-dev
+python3 -m pip install simple-pid
+
+
 ```
 
 ## Future Extensions

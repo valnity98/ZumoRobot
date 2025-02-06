@@ -10,22 +10,33 @@ def generate_launch_description():
         ),
         Node(
             package='zumo_robot',
-            executable='pid_controller_node',
-            name='pid_controller_node'
+            executable='motors_node',
+            name='motors_node'
         ),
         Node(
             package='zumo_robot',
-            executable='arduino_node',
-            name='arduino_node'
+            executable='encoder_node',
+            name='encoder_node'
         ),
         Node(
             package='zumo_robot',
             executable='path_mapping_node',
-            name='mapping_node'
+            name='path_mapping_node'
         ),
         Node(
             package='zumo_robot',
-            executable='tf2_transform_node',
-            name='Tf2_Node'
+            executable='tf2_node',
+            name='tf2_node'
+        ),
+        Node(
+            package='zumo_robot',
+            executable="interface_node",
+            name='interface_node',
+        ),
+        Node(
+            package='rviz2',          # Das Package für RViz2
+            executable='rviz2',       # Der ausführbare Name
+            name='rviz2',             # Instanz-Name
+            output='screen',          # Konsolenausgabe
         ),
     ])

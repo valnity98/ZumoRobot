@@ -32,12 +32,14 @@ setup(
     entry_points={
         'console_scripts': [
         	'test_led = zumo_robot.test_led:main',
-            'camera_node = zumo_robot.camera_node:main',
-            'pid_controller_node = zumo_robot.pid_controller_node:main',
-            'arduino_node = zumo_robot.arduino_node:main',
-            'qt_ros_interface = zumo_robot.qt_interface_node:main',
-            'path_mapping_node = zumo_robot.mapping_node:main',
-            'tf2_transform_node = zumo_robot.Tf2_Node:main',
+            'motors_node = zumo_robot.motors_node:main',
+            'encoder_node = zumo_robot.encoder_node:main',
+            'interface_node = zumo_robot.interface_node:main',
+            #'path_mapping_node = zumo_robot.path_mapping_node:main',
+            'tf2_node = zumo_robot.tf2_node:main',
+            'log_node = Zumo_Library.log_node:main',
+            'camera_node = zumo_robot.camera_node_v2:main',
+            'path_mapping_node = zumo_robot.path:main',
             
         ],
     },
