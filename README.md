@@ -10,6 +10,9 @@ This project aims to enhance the Zumo robot to operate based on camera-based ima
 4. **(Optional) Mapping:** Implementing wheel encoders for data acquisition and creating a map of the traversed path in ROS2.
 5. **Validation:** Testing and evaluating potential use cases.
 
+## Project Test
+![Demo GIF](zumo_robot/Video&Gif/zumorobot_test.gif)
+
 ## Required Hardware
 
 - **Zumo Robot with Arduino Controller:** The base hardware, including motors. This project uses the Zumo Shield for Arduino v1.2, which does not come pre-equipped with encoders. However, encoders have been mounted onto the Zumo for this project.
