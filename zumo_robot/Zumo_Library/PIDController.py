@@ -70,7 +70,7 @@ class Zumo328PPID:
 
             self._prevT = currT  # Update the previous time
 
-                # Update integral term
+            # Update integral term
             self._integral += error * deltaT
 
             # Apply Anti-Windup by clamping the integral term
