@@ -1,3 +1,18 @@
+#!/usr/bin/env python3
+
+'''
+ ------------------------------------------------------------------------------
+ File: Log_node.py
+ Author: Mutasem Bader
+ Description:
+    In order to avoid an excessive flood o recurrring log messages in the
+    user interface, a special log class has been implemented. it only stores
+    important messages that occur once and displays them in a special log field.
+    Repeated messages, such as thoes about camera images or engine speeds, are 
+    deliberately excluded in order to keep the user interface clear.
+ ------------------------------------------------------------------------------ 
+'''
+
 import rclpy  # ROS2 Python client library
 from rclpy.node import Node  # For creating a ROS2 node
 from std_msgs.msg import String  # ROS2 message

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """
 Camera Node for ROS 2
 Author: Mutasem Bader, Felix Biermann
@@ -6,6 +7,7 @@ Description:
     - Captures frames from a camera using OpenCV.
     - Publishes detected line coordinates (x, y) as Float32MultiArray on the 'line_coordinates' topic.
     - Publishes the camera frames as ROS 2 Image messages on the 'camera_topic' topic.
+    - Kalmanfilter
 
 Requirements:
     - ROS 2 installation
@@ -21,7 +23,7 @@ import cv2
 from cv_bridge import CvBridge
 import numpy as np
 from scipy.interpolate import splprep, splev
-from Zumo_Library.log_node import LogPublisher
+from zumo_robot.zumo_robot.log_node import LogPublisher
 
 
 class CameraNode(Node):

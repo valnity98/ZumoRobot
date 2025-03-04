@@ -31,7 +31,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-        	'test_led = zumo_robot.test_led:main',
+        	#'test_led = zumo_robot.test_led:main',
             'motors_node = zumo_robot.motors_node:main',
             'encoder_node = zumo_robot.encoder_node:main',
             'interface_node = zumo_robot.interface_node:main',
@@ -39,7 +39,7 @@ setup(
             'tf2_node = zumo_robot.tf2_node:main',
             'log_node = Zumo_Library.log_node:main',
             'camera_node = zumo_robot.camera_node_v2:main',
-            'path_mapping_node = zumo_robot.path:main',
+            'path_mapping_node = zumo_robot.path_node:main',
             
         ],
     },

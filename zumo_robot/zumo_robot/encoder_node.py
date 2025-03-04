@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """
 Arduino Node for ROS 2
 Author: Mutasem Bader
@@ -14,7 +15,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
 import serial
-from Zumo_Library.log_node import LogPublisher
+from zumo_robot.zumo_robot.log_node import LogPublisher
 
 
 class Encoder(Node):
@@ -51,12 +52,12 @@ class Encoder(Node):
         if self.serial_port and self.serial_port.in_waiting >= 10:
             try:
                 # Read the 10-byte packet from Arduino
-                data = self.serial_port.read(10)
+                Encoder_Data = self.serial_port.read(10)
                 
                 if len(data) == 10 and data[0] == 0x02 and data[9] == 0x03:  # Check for STX and ETX
                     # Extract encoder data
-                    right_encoder = int.from_bytes(data[1:5], byteorder='little', signed=True)
-                    left_encoder = int.from_bytes(data[5:9], byteorder='little', signed=True)
+                    right_encoder = int.from_bytes(Encoder_Data[1:5], byteorder='little', signed=True)
+                    left_encoder = int.from_bytes(Encoder_Data[5:9], byteorder='little', signed=True)
 
                     # Create and publish the message
                     msg = Int32MultiArray()

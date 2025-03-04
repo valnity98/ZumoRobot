@@ -33,7 +33,7 @@ from std_msgs.msg import Int32MultiArray
 from nav_msgs.msg import OccupancyGrid
 from geometry_msgs.msg import Pose, Point
 from visualization_msgs.msg import Marker
-from Zumo_Library.log_node import LogPublisher
+from zumo_robot.zumo_robot.log_node import LogPublisher
 import math
 import numpy as np
 

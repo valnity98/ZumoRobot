@@ -34,9 +34,9 @@ def generate_launch_description():
             name='interface_node',
         ),
         Node(
-            package='rviz2',          # Das Package für RViz2
-            executable='rviz2',       # Der ausführbare Name
-            name='rviz2',             # Instanz-Name
-            output='screen',          # Konsolenausgabe
+            package='rviz2',          
+            executable='rviz2',       
+            name='rviz2',             
+            output='screen',         
         ),
     ])

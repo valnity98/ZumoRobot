@@ -1,3 +1,31 @@
+#!/usr/bin/env python3
+
+"""
+Pathmapping Node for ROS 2
+Author: Mutasem Bader
+
+Description:
+    This node implements a path mapping algorithm for a mobile robot. 
+    It processes encoder data to track the robot's position, updates an occupancy grid map, 
+    and visualizes the robot's path using ROS 2 visualization markers.
+
+Features:
+    - Real-time robot position tracking using encoder data.
+    - Occupancy grid map updates for path visualization.
+    - Marker-based visualization for RViz.
+    - Modular handling of map and path data.
+
+Requirements:
+    - ROS 2 installation
+    - Python libraries: numpy, math
+    - ROS 2 messages: std_msgs, nav_msgs, geometry_msgs, visualization_msgs
+
+How to Run:
+    1. Launch your ROS 2 environment.
+    2. Ensure the topic `encoder_data` is publishing valid Int32MultiArray messages.
+    3. Run the node using `ros2 run <package_name> <node_script.py>`.
+"""
+
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray

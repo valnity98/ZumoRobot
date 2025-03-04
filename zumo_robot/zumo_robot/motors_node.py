@@ -18,7 +18,7 @@ from rclpy.node import Node
 from std_msgs.msg import Float32MultiArray, Int16MultiArray, Int8
 import serial
 from Zumo_Library.PIDController import Zumo328PPID
-from Zumo_Library.log_node import LogPublisher
+from zumo_robot.zumo_robot.log_node import LogPublisher
 import struct
 import numpy as np
 
@@ -88,7 +88,7 @@ class Motors(Node):
         except Exception as e:
             self.log_publisher.log(f"Unexpected error in line_coordinates_callback: {str(e)}", level="error")
 
-    def send_to_arduino(self, left_speed, right_speed, is_reset_byte):
+    def send_to_arduino(self, left_speed, right_speed, Control_byte):
         """Sends motor speed commands to the Arduino over the serial port."""
         if not self.serial_port or not self.serial_port.is_open:
             self.log_publisher.log("Serial port is not available. Skipping send.",level="error")
@@ -96,12 +96,10 @@ class Motors(Node):
 
         try:
             # Pack speeds as two 16-bit integers
-            data_to_send = struct.pack('<hh', left_speed, right_speed)
+            Motor_Data = struct.pack('<hh', left_speed, right_speed)
             start_byte = b'\x02'  # Start byte
             end_byte = b'\x03'  # End byte
-            is_reset_byte = is_reset_byte # Reset byte
-            full_data = start_byte + data_to_send + is_reset_byte + end_byte
-
+            full_data = start_byte + Motor_Data + Control_byte + end_byte
             # Send the data
             self.serial_port.write(full_data)
             self.get_logger().info(f"Sent to Arduino: Left={left_speed}, Right={right_speed}")
