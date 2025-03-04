@@ -60,7 +60,7 @@ python3 -m pip install simple-pid
 ## Developers
 
 - Mutasem Bader - ROS2, Control, Mapping, Visualization
-- Felix Fritz Biermann
+- Felix Fritz Biermann - Image Processing
 
 
 ### Note
