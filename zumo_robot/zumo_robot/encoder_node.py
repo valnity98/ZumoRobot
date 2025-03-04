@@ -54,7 +54,7 @@ class Encoder(Node):
                 # Read the 10-byte packet from Arduino
                 Encoder_Data = self.serial_port.read(10)
                 
-                if len(data) == 10 and data[0] == 0x02 and data[9] == 0x03:  # Check for STX and ETX
+                if len(Encoder_Data) == 10 and Encoder_Data[0] == 0x02 and Encoder_Data[9] == 0x03:  # Check for STX and ETX
                     # Extract encoder data
                     right_encoder = int.from_bytes(Encoder_Data[1:5], byteorder='little', signed=True)
                     left_encoder = int.from_bytes(Encoder_Data[5:9], byteorder='little', signed=True)
