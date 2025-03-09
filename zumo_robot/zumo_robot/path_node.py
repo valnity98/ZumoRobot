@@ -123,7 +123,7 @@ class PathMappingNode(Node):
     def update_map(self, x_index, y_index):
         """
         Update the map with the current robot position.
-        The position is marked as 100 (path) on the grid.
+        The position is marked as 1 (path) on the grid.
         """
         # Limit within bounds
         x_index = max(0, min(self.map_size - 1, int(x_index)))
