@@ -129,8 +129,8 @@ class PathMappingNode(Node):
         x_index = max(0, min(self.map_size - 1, int(x_index)))
         y_index = max(0, min(self.map_size - 1, int(y_index)))
 
-        if self.map_data[y_index, x_index] != 100:  # Avoid redundant marking
-            self.map_data[y_index, x_index] = 100
+        if self.map_data[y_index, x_index] != 1:  # Avoid redundant marking
+            self.map_data[y_index, x_index] = 1
 
         # Publish map
         self.publish_map()
