@@ -147,7 +147,7 @@ class PathMappingNode(Node):
         map_msg.info.height = self.map_size
         map_msg.info.origin.position.x = -self.map_size * self.resolution / 2
         map_msg.info.origin.position.y = -self.map_size * self.resolution / 2
-        map_msg.info.origin.orientation.w = 1.0
+        map_msg.info.origin.orientation.w = 1.0 #bedeutet keine Rotation (0°-Drehung).
         map_msg.data = self.map_data.flatten().tolist()
         self.map_pub.publish(map_msg)
 
@@ -159,13 +159,13 @@ class PathMappingNode(Node):
         marker.id = 1
         marker.type = Marker.LINE_STRIP
         marker.action = Marker.ADD
-        marker.scale.x = 0.05
-        marker.color.a = 1.0
+        marker.scale.x = 0.05 #Linienstärke 5 cm breite Linie
+        marker.color.a = 1.0  #Transparenz
         marker.color.r = 0.0
-        marker.color.g = 1.0
-        marker.color.b = 1.0
+        marker.color.g = 0.0
+        marker.color.b = 0.0
 
-        path_points = np.argwhere(self.map_data == 100)
+        path_points = np.argwhere(self.map_data == 1)
         for p in path_points:
             point = Point()
             point.x = p[1] * self.resolution - (self.map_size * self.resolution / 2)
