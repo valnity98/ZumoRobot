@@ -23,7 +23,7 @@ import cv2
 from cv_bridge import CvBridge
 import numpy as np
 from scipy.interpolate import splprep, splev
-from zumo_robot.zumo_robot.log_node import LogPublisher
+from zumo_robot.log_node import LogPublisher
 
 
 class CameraNode(Node):
@@ -48,7 +48,7 @@ class CameraNode(Node):
         self.kalman.processNoiseCov = np.array([[1, 0], [0, 1]], np.float32) * 0.03
 
         # Webcam öffnen
-        self.cap = cv2.VideoCapture(2)
+        self.cap = cv2.VideoCapture(0)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 

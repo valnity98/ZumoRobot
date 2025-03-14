@@ -38,7 +38,7 @@ from PyQt5 import uic, QtCore
 from PyQt5.QtCore import QVariant
 
 
-from zumo_robot.zumo_robot.log_node import LogPublisher
+from zumo_robot.log_node import LogPublisher
 
 
 

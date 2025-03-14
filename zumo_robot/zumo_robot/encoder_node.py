@@ -15,7 +15,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
 import serial
-from zumo_robot.zumo_robot.log_node import LogPublisher
+from zumo_robot.log_node import LogPublisher
 
 
 class Encoder(Node):
@@ -30,7 +30,7 @@ class Encoder(Node):
         self.publisher_ = self.create_publisher(Int32MultiArray, 'encoder_data', 10)
 
         # Initialize serial port
-        self.serial_port = self.setup_serial_connection('/dev/ttyACM0', 115200) # Port "ttyACM0" for leonardo Board
+        self.serial_port = self.setup_serial_connection('/dev/ttyUSB0', 115200) # Port "ttyACM0" for leonardo Board
 
         self.log_publisher.log("Encoder node is on")
 

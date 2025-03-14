@@ -18,7 +18,7 @@ from rclpy.node import Node
 from std_msgs.msg import Float32MultiArray, Int16MultiArray, Int8
 import serial
 from Zumo_Library.PIDController import Zumo328PPID
-from zumo_robot.zumo_robot.log_node import LogPublisher
+from zumo_robot.log_node import LogPublisher
 import struct
 import numpy as np
 
@@ -38,7 +38,7 @@ class Motors(Node):
         self.is_command = 0
 
         # Serial connection setup
-        self.serial_port = self.setup_serial_connection('/dev/ttyACM0', 115200)
+        self.serial_port = self.setup_serial_connection('/dev/ttyUSB0', 115200)
 
         # PID Controller initialization
         self.pid_controller = Zumo328PPID(kp=0.35, kd=0.1, ki = 0.1, max_speed=125.0, aktiv=True)
